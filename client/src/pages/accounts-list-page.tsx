@@ -4,7 +4,7 @@ import AccountsList from "@/features/accounts/ui/accounts-list";
 
 const AccountsListPage = () => {
   return (
-    <Box className="min-h-screen bg-slate-50 p-6 md:p-8">
+    <Box className="p-2 md:p-4">
       <Typography variant="h4" component="h1" className="mb-2 font-semibold">
         Accounts
       </Typography>
@@ -13,7 +13,7 @@ const AccountsListPage = () => {
       </Typography>
 
       <Paper
-        elevation={0}
+        elevation={2}
         className="max-w-md overflow-hidden border border-gray-200"
       >
         <AccountsList />

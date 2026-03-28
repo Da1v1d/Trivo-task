@@ -45,7 +45,7 @@ const AccountsSettings = () => {
     updateSettings(values);
   };
 
-  const selectedAccount = accountsData?.accounts.find(
+  const selectedAccount = accountsData?.find(
     (a: Account) => a.id === accountId,
   );
 
@@ -54,7 +54,7 @@ const AccountsSettings = () => {
   }
 
   return (
-    <Box className="min-h-screen bg-slate-50 p-6 md:p-8">
+    <Box className="p-6 md:p-8">
       <Button
         component={RouterLink}
         to="/accounts"

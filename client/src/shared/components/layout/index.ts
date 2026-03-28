@@ -4,3 +4,7 @@ export { Paper } from "./paper";
 export type { PaperProps } from "./paper";
 export { Stack } from "./stack";
 export type { StackProps } from "./stack";
+export { AppBar } from "./app-bar";
+export type { AppBarProps } from "./app-bar";
+export { Toolbar } from "./toolbar";
+export type { ToolbarProps } from "./toolbar";
