@@ -1,0 +1,42 @@
+---
+alwaysApply: false
+---
+
+# Account settings assignment (short reference)
+
+## Stack (required)
+
+- React with only vite start from default installation with Typescript, TypeScript, Material UI (MUI), tailwindcss, React Hook Form, axios .
+- Forms must stay **reusable**: adding a new setting type or field should not require one-off UI code per setting.
+
+## Product
+
+- **Accounts**: Simple list (mocked data is fine but we will need to use back end endpoints for this). Each account has `id` and `name`.
+- **Navigation**: Selecting an account opens that account’s settings.
+- **Data**: Each account has its own setting values. Persist with any simple approach (data from back end).
+
+## Setting types to support
+
+- Boolean (on/off)
+- Text
+- Number
+- Select (single)
+- Multiselect / checkboxes
+
+## Example settings (illustrative)
+
+- Enable notifications
+- Support email
+- Daily email limit
+- Timezone
+- Allowed channels
+
+## Core requirement (non-negotiable)
+
+- Settings are **defined in back end code** (e.g. an endpoint that returns config).
+- The UI **derives** fields from that definition: if a new setting is added to the config from back end part, it should **appear and work** without new custom UI logic for that specific key.
+
+## Implementation guidance
+
+- Prefer a single generic renderer driven by setting metadata (`type`, `key`, `label`, `options` where needed, validation rules).
+- Keep account-specific state separate from the global settings definition.

@@ -1,0 +1,50 @@
+---
+description: FSD-style src layout — where to put utils, types, hooks, and API in the client
+alwaysApply: true
+---
+
+# Frontend client — FSD folder structure
+
+Root: **`src/`**.
+
+## Top-level layout
+
+| Path                                      | Purpose                                                                       |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | --------------------------- |
+| `src/pages/`                              | Route-level / screen composition                                              |
+| `src/features/<name>/`                    | Feature slice: `ui/`, `model/`, `lib/`                                        |
+| `src/providers/`                          | App-wide providers                                                            |
+| `src/assets/images/`, `icons/`, `videos/` | Static media                                                                  |
+| `src/shared/components/`                  | Reusable UI                                                                   | `dynamic-settings-form.tsx` |
+| `src/shared/utils/`                       | Cross-feature helpers (`utils.ts`, `api.ts`, …)                               |
+| `src/shared/constants/`                   | Shared constants                                                              |
+| `src/shared/types/`                       | Cross-feature types (e.g. `api.ts` for `BaseApiResponse`)                     |
+| `src/shared/hooks/`                       | Cross-feature hooks (e.g. `useMediaQuery.ts`)                                 |
+| `src/shared/services/`                    | Shared infrastructure; e.g. `base-api.service.ts`, `api/` for base HTTP layer |
+
+## Feature slice (`src/features/<feature>/`)
+
+- **`ui/`** — components for this feature only.
+- **`model/`** — state and data access:
+  - **`model/hooks/`** — feature hooks (e.g. `useUsers.ts`).
+  - **`model/api/`** — feature API modules (e.g. `users.api.ts`) as classes/methods that use the shared base API service.
+- **`lib/`** — feature-only pure code:
+  - **`lib/utils.ts`** — feature logic (e.g. `combineUserSettings`).
+  - **`lib/types.ts`** — feature-only types (e.g. `BaseUser`).
+
+Use **plural** feature folder names when they represent a domain aggregate (`users`, `accounts`), unless the codebase already standardizes on singular.
+
+## Placement rules (feature vs shared)
+
+| Kind                 | Feature-specific                                                     | Shared / general                                   |
+| -------------------- | -------------------------------------------------------------------- | -------------------------------------------------- |
+| Pure logic / helpers | `features/<f>/lib/utils.ts`                                          | `shared/utils/utils.ts` or `shared/utils/api.ts`   |
+| Types                | `features/<f>/lib/types.ts`                                          | `shared/types/<topic>.ts` (e.g. `api.ts`)          |
+| Stateful hooks       | `features/<f>/model/hooks/useX.ts`                                   | `shared/hooks/useX.ts`                             |
+| HTTP / API classes   | `features/<f>/model/api/<f>.api.ts` (compose `shared/services` base) | `shared/services/` (base client, shared endpoints) |
+
+**Default:** If it is used only by one feature, keep it under that feature. If two or more features need it, promote to `shared/` (or extract a shared submodule).
+
+## Imports
+
+Prefer **stable public paths** (e.g. `@/shared/...`, `@/features/users/...`) if the bundler/tsconfig defines them; avoid deep relative chains across slices when an alias exists.
