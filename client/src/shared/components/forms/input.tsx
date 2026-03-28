@@ -1,12 +1,19 @@
 import BaseForm, {
   type FormControlFunc,
 } from "@/shared/components/forms/base-form";
-import type { TODO } from "@/shared/types/types";
-import { Checkbox as MuiCheckbox } from "@mui/material";
+import { TextField, type TextFieldProps } from "@mui/material";
 
-const Checkbox = MuiCheckbox;
+const Input = TextField;
 
-export const FormCheckbox: FormControlFunc<TODO> = ({
+type FormInputExtraProps = Omit<
+  TextFieldProps,
+  "name" | "value" | "defaultValue" | "onBlur" | "onChange" | "error"
+> & {
+  label: TextFieldProps["label"];
+  description?: TextFieldProps["helperText"];
+};
+
+export const FormInput: FormControlFunc<FormInputExtraProps> = ({
   control,
   name,
   label,
@@ -16,10 +23,10 @@ export const FormCheckbox: FormControlFunc<TODO> = ({
   return (
     <BaseForm control={control} name={name}>
       {({ field, invalid, errorMessage }) => (
-        <Checkbox
+        <Input
           {...props}
           {...field}
-          checked={field.value ?? false}
+          value={field.value ?? ""}
           label={label}
           error={invalid}
           helperText={errorMessage ?? description}
@@ -29,4 +36,4 @@ export const FormCheckbox: FormControlFunc<TODO> = ({
   );
 };
 
-export default Checkbox;
+export default Input;

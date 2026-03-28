@@ -13,6 +13,7 @@ import {
 } from "@/shared/components/forms";
 import { Controller, type Control, type FieldErrors } from "react-hook-form";
 import type { SettingFieldDefinition } from "@/shared/types/settings-definition";
+import Input from "@/shared/components/forms/input";
 
 type Props = {
   field: SettingFieldDefinition;
@@ -51,7 +52,7 @@ export const SettingFieldControl = ({ field, control, errors }: Props) => {
           name={field.key}
           control={control}
           render={({ field: rhf }) => (
-            <TextField
+            <Input
               {...rhf}
               value={rhf.value ?? ""}
               label={field.label}

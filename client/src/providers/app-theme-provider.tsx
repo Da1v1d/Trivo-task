@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
+import { CssBaseline, createTheme } from "@/shared/components/theme";
 import {
+  GlobalStyles,
+  StyledEngineProvider,
   ThemeProvider,
-  CssBaseline,
-  createTheme,
-} from "@/shared/components/theme";
+} from "@mui/material";
+
+const layerOrder = "@layer theme, base, mui, components, utilities;" as const;
 
 const theme = createTheme({
   palette: {
@@ -22,15 +25,14 @@ const theme = createTheme({
   },
 });
 
-type AppThemeProviderProps = {
-  children: ReactNode;
-};
-
-export const AppThemeProvider = ({ children }: AppThemeProviderProps) => {
+export const AppThemeProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+    <StyledEngineProvider enableCssLayer>
+      <GlobalStyles styles={layerOrder} />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
