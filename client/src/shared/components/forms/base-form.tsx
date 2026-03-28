@@ -40,15 +40,15 @@ export type FormBaseProps<
   ) => ReactElement;
 };
 
-export type FormControlFunc<
-  ExtraProps extends Record<string, unknown> = Record<never, never>,
-> = <
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-  TTransformedValues = TFieldValues,
->(
-  props: FormControlProps<TFieldValues, TName, TTransformedValues> & ExtraProps,
-) => ReactElement;
+export type FormControlFunc<ExtraProps extends object = Record<string, never>> =
+  <
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+    TTransformedValues = TFieldValues,
+  >(
+    props: FormControlProps<TFieldValues, TName, TTransformedValues> &
+      ExtraProps,
+  ) => ReactElement;
 
 const BaseForm = <
   TFieldValues extends FieldValues = FieldValues,

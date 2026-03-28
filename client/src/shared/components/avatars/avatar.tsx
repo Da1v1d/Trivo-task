@@ -1,2 +1,5 @@
-export { Avatar } from "@mui/material";
-export type { AvatarProps } from "@mui/material";
+import { Avatar as MuiAvatar } from "@mui/material";
+
+const Avatar = MuiAvatar;
+
+export default Avatar;

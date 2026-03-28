@@ -7,9 +7,14 @@ const Input = TextField;
 
 type FormInputExtraProps = Omit<
   TextFieldProps,
-  "name" | "value" | "defaultValue" | "onBlur" | "onChange" | "error"
+  | "name"
+  | "value"
+  | "defaultValue"
+  | "onBlur"
+  | "onChange"
+  | "error"
+  | "helperText"
 > & {
-  label: TextFieldProps["label"];
   description?: TextFieldProps["helperText"];
 };
 
