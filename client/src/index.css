@@ -1,8 +1,17 @@
+/* MUI + Tailwind v4: layer order so utilities can override MUI (see MUI docs) */
+@layer theme, base, mui, components, utilities;
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
-  margin: 0;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+  }
 }
 
 #root {

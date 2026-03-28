@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { Link as RouterLink, Navigate, useParams } from "react-router-dom";
 import { Box, Paper } from "@/shared/components/layout";
-import { Typography } from "@/shared/components/texts";
+import { Text } from "@/shared/components/texts";
 import { Button } from "@/shared/components/buttons";
 import {
   Alert,
   CircularProgress,
   Snackbar,
 } from "@/shared/components/feedback";
-import { ArrowBackIcon } from "@/shared/components/icons";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DynamicSettingsForm } from "@/features/settings/ui/DynamicSettingsForm";
 import useAccounts from "@/features/accounts/model/hooks/use-accounts";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
@@ -92,9 +92,9 @@ const AccountsSettings = () => {
 
         {accountId && definitionData && !defLoading && (
           <Box className="max-w-2xl">
-            <Typography variant="h5" className="mb-6 font-semibold">
+            <Text variant="h5" className="mb-6 font-semibold">
               {selectedAccount?.name ?? "Account"} — Settings
-            </Typography>
+            </Text>
 
             {settingsLoading ? (
               <Box className="flex justify-center mt-8">

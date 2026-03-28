@@ -1,2 +1,5 @@
-export { Button } from "@mui/material";
-export type { ButtonProps } from "@mui/material";
+import { Button } from "@mui/material";
+
+const AppButton = Button;
+
+export default AppButton;

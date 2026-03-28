@@ -1,21 +1,20 @@
-import { Box, Paper } from "@/shared/components/layout";
-import { Typography } from "@/shared/components/texts";
+import { Box, Paper, Stack } from "@/shared/components/layout";
 import AccountsList from "@/features/accounts/ui/accounts-list";
+import { Text } from "@/shared/components/texts";
 
 const AccountsListPage = () => {
   return (
-    <Box className="p-2 md:p-4">
-      <Typography variant="h4" component="h1" className="mb-2 font-semibold">
-        Accounts
-      </Typography>
-      <Typography variant="body2" color="text.secondary" className="mb-6">
-        Choose an account to open its settings.
-      </Typography>
+    <Box className="p-2 md:p-4" display="flex" flexDirection="column" gap={2}>
+      <Stack>
+        <Text variant="h4" component="h1" className="font-semibold">
+          Accounts
+        </Text>
+        <Text variant="body2" color="text.secondary" className="">
+          Choose an account to open its settings.
+        </Text>
+      </Stack>
 
-      <Paper
-        elevation={2}
-        className="max-w-md overflow-hidden border border-gray-200"
-      >
+      <Paper elevation={2} className="overflow-hidden border border-gray-200">
         <AccountsList />
       </Paper>
     </Box>
