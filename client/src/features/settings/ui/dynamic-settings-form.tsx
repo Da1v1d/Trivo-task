@@ -1,4 +1,3 @@
-import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@/shared/components/layout";
@@ -22,26 +21,19 @@ export const DynamicSettingsForm = ({
   onSubmit,
   isSaving,
 }: DynamicSettingsFormProps) => {
-  const fieldList = useMemo(
-    () => (Array.isArray(fields) ? fields : []),
-    [fields],
-  );
+  const fieldList = Array.isArray(fields) ? fields : [];
+
   const schema = buildValidationSchema(fieldList);
   const defaultValues = buildDefaultValues(fieldList, values);
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { isDirty },
   } = useForm<Record<string, unknown>>({
     resolver: zodResolver(schema),
     defaultValues,
   });
-
-  useEffect(() => {
-    reset(buildDefaultValues(fieldList, values));
-  }, [fieldList, values, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -53,7 +45,7 @@ export const DynamicSettingsForm = ({
             control={control}
           />
         ))}
-
+        {/* bul-bul-bul-bul bul-bul-bul-bul */}
         <Button
           type="submit"
           variant="contained"
@@ -62,7 +54,7 @@ export const DynamicSettingsForm = ({
           aria-label="Save settings"
           loading={isSaving}
         >
-          Save settings
+          Save
         </Button>
       </Stack>
     </form>

@@ -3,7 +3,6 @@ import { Box, Paper } from "@/shared/components/layout";
 import { Alert, CircularProgress, Toast } from "@/shared/components/feedback";
 import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-form";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
-import { useSettingsDefinition } from "@/features/settings/model/hooks/use-settings-definition";
 import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 import BackButton from "@/shared/components/core/back-button";
 import useAccount from "@/features/accounts/model/hooks/use-account";
@@ -14,18 +13,16 @@ const AccountsSettings = () => {
 
   const accountQuery = useAccount(accountId!);
 
-  const {
-    data: definitionData,
-    isLoading: defLoading,
-    isError: defError,
-  } = useSettingsDefinition();
+  // const {
+  //   data: definitionData,
+  //   isLoading: defLoading,
+  //   isError: defError,
+  // } = useSettingsDefinition();
 
   const {
-    settings,
-    isLoading: settingsLoading,
-    isError: settingsError,
-    updateSettings,
     mutation: { isPending, error, isSuccess, reset },
+    updateSettings,
+    ...accountSettingsQuery
   } = useAccountSettings(accountId!);
 
   const handleSubmit = (values: AccountSettingsValues) => {
@@ -43,55 +40,57 @@ const AccountsSettings = () => {
       <BackButton />
 
       <Box className="max-w-3xl mt-4">
-        {accountId && defLoading && (
+        {accountId && accountSettingsQuery.isLoading && (
           <Box className="flex justify-center mt-12">
             <CircularProgress />
           </Box>
         )}
 
-        {accountId && defError && (
+        {accountId && accountSettingsQuery.isError && (
           <Alert severity="error" className="mt-4">
             Failed to load settings definition.
           </Alert>
         )}
 
-        {accountId && settingsError && (
+        {accountId && accountSettingsQuery.isError && (
           <Alert severity="error" className="mt-4">
             Failed to load account settings.
           </Alert>
         )}
 
-        {accountId && definitionData && !defLoading && (
-          <Box className="max-w-2xl space-y-4">
-            <AccountPersona
-              name={selectedAccount?.name}
-              surname={selectedAccount?.surname}
-              image={selectedAccount?.image}
-              avatarProps={{
-                className:
-                  "size-32 shrink-0 bg-indigo-100 text-sm font-semibold text-indigo-800",
-              }}
-              textProps={{
-                className: "text-2xl font-semibold",
-              }}
-            />
+        {accountId &&
+          accountSettingsQuery.data &&
+          !accountSettingsQuery.isLoading && (
+            <Box className="max-w-2xl space-y-4">
+              <AccountPersona
+                name={selectedAccount?.name}
+                surname={selectedAccount?.surname}
+                image={selectedAccount?.image}
+                avatarProps={{
+                  className:
+                    "size-32 shrink-0 bg-indigo-100 text-sm font-semibold text-indigo-800",
+                }}
+                textProps={{
+                  className: "text-2xl font-semibold",
+                }}
+              />
 
-            {settingsLoading ? (
-              <Box className="flex justify-center mt-8">
-                <CircularProgress />
-              </Box>
-            ) : (
-              <Paper elevation={0} className="p-6 border border-gray-200">
-                <DynamicSettingsForm
-                  fields={definitionData}
-                  values={settings}
-                  onSubmit={handleSubmit}
-                  isSaving={isPending}
-                />
-              </Paper>
-            )}
-          </Box>
-        )}
+              {accountSettingsQuery.isLoading ? (
+                <Box className="flex justify-center mt-8">
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <Paper elevation={0} className="p-6 border border-gray-200">
+                  <DynamicSettingsForm
+                    fields={accountSettingsQuery.data}
+                    values={accountSettingsQuery.data}
+                    onSubmit={handleSubmit}
+                    isSaving={isPending}
+                  />
+                </Paper>
+              )}
+            </Box>
+          )}
 
         <Toast
           open={isSuccess}

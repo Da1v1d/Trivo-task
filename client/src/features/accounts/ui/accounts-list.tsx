@@ -11,6 +11,7 @@ import AccountsListItem from "@/features/accounts/ui/elements/accounts-list-item
 import { useState } from "react";
 
 const AccountsList = () => {
+  // For complex logic context or global state management library preferred
   const [page, setPage] = useState(1);
   const accountsQuery = useAccounts({ page, limit: ACCOUNTS_PER_PAGE });
 
