@@ -18,7 +18,7 @@ const AccountsList = () => {
     return <AccountsListSkeleton />;
   }
 
-  const accounts = accountsQuery.data ?? [];
+  const accounts = accountsQuery.data?.data ?? [];
 
   if (accounts.length === 0) {
     return <AccountsListNoData />;

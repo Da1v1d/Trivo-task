@@ -1,13 +1,14 @@
 import { ApiService } from "@/shared/services/api";
 import type {
-  AccountsResponse,
+  Account,
   AccountSettingsResponse,
   AccountSettingsValues,
 } from "@/shared/types/accounts";
+import type { PaginationResponse } from "@/shared/types/api";
 
 export class AccountsApi {
-  public static listAccounts = () =>
-    ApiService.get<AccountsResponse>("/accounts");
+  public static getAll = () =>
+    ApiService.get<PaginationResponse<Account>>("/accounts");
 
   public static getAccountSettings = (accountId: string) =>
     ApiService.get<AccountSettingsResponse>(`/accounts/${accountId}/settings`);

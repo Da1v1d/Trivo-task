@@ -1,6 +1,4 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import { delay } from "@/shared/utils/utils";
-import { accountsMockData } from "@/features/accounts/model/data/accounts-mock-data";
 import { ACCOUNTS_QUERY_KEY } from "@/features/accounts/lib/constants";
 import { AccountsApi } from "@/features/accounts/model/api/accounts.api";
 
@@ -11,14 +9,14 @@ import { AccountsApi } from "@/features/accounts/model/api/accounts.api";
 export const getAccountsQueryOptions = () =>
   queryOptions({
     queryKey: [ACCOUNTS_QUERY_KEY],
-    queryFn: AccountsApi.listAccounts,
+    queryFn: AccountsApi.getAll,
   });
 
 const useAccounts = () => {
   return useQuery({
     queryKey: [ACCOUNTS_QUERY_KEY],
-    queryFn: () => delay(1000).then(() => accountsMockData),
-    // queryFn: AccountsApi.listAccounts,
+    // queryFn: () => delay(1000).then(() => accountsMockData),
+    queryFn: AccountsApi.getAll,
   });
 };
 
