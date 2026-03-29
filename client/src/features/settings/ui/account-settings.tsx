@@ -1,19 +1,13 @@
-import { useEffect } from "react";
-import { Link as RouterLink, Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { Box, Paper } from "@/shared/components/layout";
 import { Text } from "@/shared/components/texts";
-import { Button } from "@/shared/components/buttons";
-import {
-  Alert,
-  CircularProgress,
-  Snackbar,
-} from "@/shared/components/feedback";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Alert, CircularProgress, Toast } from "@/shared/components/feedback";
 import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-form";
 import useAccounts from "@/features/accounts/model/hooks/use-accounts";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
 import { useSettingsDefinition } from "@/features/settings/model/hooks/use-settings-definition";
 import type { Account, AccountSettingsValues } from "@/shared/types/accounts";
+import BackButton from "@/shared/components/core/back-button";
 
 const AccountsSettings = () => {
   const { accountId } = useParams<{ accountId: string }>();
@@ -24,22 +18,14 @@ const AccountsSettings = () => {
     isLoading: defLoading,
     isError: defError,
   } = useSettingsDefinition();
+
   const {
     settings,
     isLoading: settingsLoading,
     isError: settingsError,
     updateSettings,
-    isSaving,
-    isSuccess,
-    saveError,
-    resetSaveState,
-  } = useAccountSettings(accountId);
-
-  useEffect(() => {
-    if (!isSuccess) return;
-    const timer = setTimeout(resetSaveState, 3000);
-    return () => clearTimeout(timer);
-  }, [isSuccess, resetSaveState]);
+    mutation: { isPending, error, isSuccess, reset },
+  } = useAccountSettings(accountId!);
 
   const handleSubmit = (values: AccountSettingsValues) => {
     updateSettings(values);
@@ -54,16 +40,8 @@ const AccountsSettings = () => {
   }
 
   return (
-    <Box className="p-6 md:p-8">
-      <Button
-        component={RouterLink}
-        to="/accounts"
-        startIcon={<ArrowBackIcon aria-hidden />}
-        className="mb-6"
-        aria-label="Back to accounts list"
-      >
-        All accounts
-      </Button>
+    <Box className="p-2 md:p-4">
+      <BackButton />
 
       <Box className="max-w-3xl">
         {accountsError && (
@@ -102,38 +80,38 @@ const AccountsSettings = () => {
               </Box>
             ) : (
               <Paper elevation={0} className="p-6 border border-gray-200">
-                <DynamicSettingsForm
+                {/* <DynamicSettingsForm
                   fields={definitionData.fields}
                   values={settings}
                   onSubmit={handleSubmit}
-                  isSaving={isSaving}
-                />
+                  isSaving={isPending}
+                /> */}
               </Paper>
             )}
           </Box>
         )}
 
-        <Snackbar
+        <Toast
           open={isSuccess}
           autoHideDuration={3000}
-          onClose={resetSaveState}
+          onClose={reset}
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         >
-          <Alert severity="success" variant="filled" onClose={resetSaveState}>
+          <Alert severity="success" variant="filled" onClose={reset}>
             Settings saved successfully.
           </Alert>
-        </Snackbar>
+        </Toast>
 
-        <Snackbar
-          open={!!saveError}
+        <Toast
+          open={!!error}
           autoHideDuration={5000}
-          onClose={resetSaveState}
+          onClose={reset}
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         >
-          <Alert severity="error" variant="filled" onClose={resetSaveState}>
+          <Alert severity="error" variant="filled" onClose={reset}>
             Failed to save settings. Please try again.
           </Alert>
-        </Snackbar>
+        </Toast>
       </Box>
     </Box>
   );

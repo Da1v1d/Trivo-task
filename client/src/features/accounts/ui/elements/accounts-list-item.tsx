@@ -1,4 +1,4 @@
-import { getAccountInitials } from "@/features/accounts/lib/get-account-initials";
+import { getAccountInitials } from "@/features/accounts/lib/utils";
 import { Avatar } from "@/shared/components/avatars";
 import { Stack } from "@/shared/components/layout";
 import { ListItemButton, ListItemText } from "@/shared/components/lists";
