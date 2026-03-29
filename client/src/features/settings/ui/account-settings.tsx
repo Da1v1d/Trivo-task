@@ -1,7 +1,7 @@
 import { Navigate, useParams } from "react-router-dom";
 import { Box, Paper } from "@/shared/components/layout";
 import { Alert, CircularProgress, Toast } from "@/shared/components/feedback";
-import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-form";
+import { DynamicSettingsForm } from "@/features/settings/ui/blocks/dynamic-settings-form";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
 import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 import BackButton from "@/shared/components/core/back-button";
@@ -13,12 +13,6 @@ const AccountsSettings = () => {
 
   const accountQuery = useAccount(accountId!);
 
-  // const {
-  //   data: definitionData,
-  //   isLoading: defLoading,
-  //   isError: defError,
-  // } = useSettingsDefinition();
-
   const {
     mutation: { isPending, error, isSuccess, reset },
     updateSettings,
@@ -29,7 +23,7 @@ const AccountsSettings = () => {
     updateSettings(values);
   };
 
-  const selectedAccount = accountQuery.data;
+  const accountData = accountQuery.data;
 
   if (!accountId) {
     return <Navigate to="/accounts" replace />;
@@ -48,12 +42,6 @@ const AccountsSettings = () => {
 
         {accountId && accountSettingsQuery.isError && (
           <Alert severity="error" className="mt-4">
-            Failed to load settings definition.
-          </Alert>
-        )}
-
-        {accountId && accountSettingsQuery.isError && (
-          <Alert severity="error" className="mt-4">
             Failed to load account settings.
           </Alert>
         )}
@@ -63,9 +51,9 @@ const AccountsSettings = () => {
           !accountSettingsQuery.isLoading && (
             <Box className="max-w-2xl space-y-4">
               <AccountPersona
-                name={selectedAccount?.name}
-                surname={selectedAccount?.surname}
-                image={selectedAccount?.image}
+                name={accountData?.name}
+                surname={accountData?.surname}
+                image={accountData?.image}
                 avatarProps={{
                   className:
                     "size-32 shrink-0 bg-indigo-100 text-sm font-semibold text-indigo-800",
