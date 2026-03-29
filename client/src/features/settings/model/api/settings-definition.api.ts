@@ -1,7 +1,10 @@
 import { ApiService } from "@/shared/services/api";
-import type { SettingsDefinitionResponse } from "@/features/settings/lib/types";
+import type { BaseApiResponse } from "@/shared/types/api";
+import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 
 export class SettingsApi {
   public static getDefinition = () =>
-    ApiService.get<SettingsDefinitionResponse>("/settings/definition");
+    ApiService.get<BaseApiResponse<SettingFieldDefinition[]>>(
+      "/settings/definition",
+    );
 }

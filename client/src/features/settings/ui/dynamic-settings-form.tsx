@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@/shared/components/layout";
-import { CircularProgress } from "@/shared/components/feedback";
 import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 import type { AccountSettingsValues } from "@/shared/types/accounts";
 import { buildValidationSchema } from "@/features/settings/lib/schemas";
@@ -61,12 +60,9 @@ export const DynamicSettingsForm = ({
           disabled={!isDirty || isSaving}
           className="self-start"
           aria-label="Save settings"
+          loading={isSaving}
         >
-          {isSaving ? (
-            <CircularProgress size={20} color="inherit" />
-          ) : (
-            "Save settings"
-          )}
+          Save settings
         </Button>
       </Stack>
     </form>

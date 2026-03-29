@@ -1,4 +1,4 @@
-export type SettingFieldType =
+export type SettingField =
   | "boolean"
   | "text"
   | "number"
@@ -19,13 +19,9 @@ export type SettingFieldValidation = {
 
 export type SettingFieldDefinition = {
   key: string;
-  type: SettingFieldType;
+  type: SettingField;
   label: string;
   options?: SettingFieldOption[];
   validation?: SettingFieldValidation;
   defaultValue?: unknown;
-};
-
-export type SettingsDefinitionResponse = {
-  fields: SettingFieldDefinition[];
 };

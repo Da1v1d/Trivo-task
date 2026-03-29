@@ -1,8 +1,11 @@
-import type { SettingsDefinitionResponse } from "@/features/settings/lib/types";
+import type { BaseApiResponse } from "@/shared/types/api";
+import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 
 /** Mirrors assignment examples: notifications, support email, limits, timezone, channels. */
-export const settingsDefinitionMockData: SettingsDefinitionResponse = {
-  fields: [
+export const settingsDefinitionMockData: BaseApiResponse<
+  SettingFieldDefinition[]
+> = {
+  data: [
     {
       key: "notifications_enabled",
       type: "boolean",

@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { Box, Paper } from "@/shared/components/layout";
 import { Text } from "@/shared/components/texts";
@@ -7,7 +6,6 @@ import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-for
 import useAccounts from "@/features/accounts/model/hooks/use-accounts";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
 import { useSettingsDefinition } from "@/features/settings/model/hooks/use-settings-definition";
-import { normalizeSettingsDefinitionFields } from "@/features/settings/lib/utils";
 import type { Account, AccountSettingsValues } from "@/shared/types/accounts";
 import BackButton from "@/shared/components/core/back-button";
 
@@ -35,11 +33,6 @@ const AccountsSettings = () => {
 
   const selectedAccount = accountsData?.find(
     (a: Account) => a.id === accountId,
-  );
-
-  const definitionFields = useMemo(
-    () => normalizeSettingsDefinitionFields(definitionData),
-    [definitionData],
   );
 
   if (!accountId) {
@@ -88,7 +81,7 @@ const AccountsSettings = () => {
             ) : (
               <Paper elevation={0} className="p-6 border border-gray-200">
                 <DynamicSettingsForm
-                  fields={definitionFields}
+                  fields={definitionData}
                   values={settings}
                   onSubmit={handleSubmit}
                   isSaving={isPending}

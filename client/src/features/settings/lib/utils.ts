@@ -1,21 +1,5 @@
-import type {
-  SettingFieldDefinition,
-  SettingsDefinitionResponse,
-} from "@/features/settings/lib/types";
+import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 import type { AccountSettingsValues } from "@/shared/types/accounts";
-
-/** Supports `{ fields: [...] }` or a bare field array from the API. */
-export const normalizeSettingsDefinitionFields = (
-  data: SettingsDefinitionResponse | SettingFieldDefinition[] | unknown,
-): SettingFieldDefinition[] => {
-  if (data == null) return [];
-  if (Array.isArray(data)) return data;
-  if (typeof data === "object" && data !== null && "fields" in data) {
-    const { fields } = data as SettingsDefinitionResponse;
-    return Array.isArray(fields) ? fields : [];
-  }
-  return [];
-};
 
 const getFieldDefault = (field: SettingFieldDefinition): unknown => {
   if (field.defaultValue !== undefined) return field.defaultValue;

@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { delay } from "@/shared/utils/utils";
 import { settingsDefinitionMockData } from "@/features/settings/model/data/settings-definition-mock-data";
+import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 
 export const useSettingsDefinition = () => {
-  return useQuery({
+  return useQuery<SettingFieldDefinition[]>({
     queryKey: ["settings-definition"],
-    queryFn: () => delay(400).then(() => settingsDefinitionMockData),
+    queryFn: () => delay(400).then(() => settingsDefinitionMockData.data),
     // import { SettingsApi } from "@/features/settings/model/api/settings-definition.api";
-    // queryFn: () => SettingsApi.getDefinition(),
+    // queryFn: () => SettingsApi.getDefinitionFields(),
     staleTime: 5 * 60 * 1000,
   });
 };
