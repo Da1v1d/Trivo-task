@@ -2,13 +2,20 @@ import { ApiService } from "@/shared/services/api";
 import type {
   Account,
   AccountSettingsValues,
+  AccountsRequest,
   MergedAccountSetting,
 } from "@/features/accounts/lib/types";
 import type { ApiResponse, PaginationResponse } from "@/shared/types/api";
+import { ACCOUNTS_PER_PAGE } from "@/features/accounts/lib/constants";
 
 export class AccountsApi {
-  public static getAll = () =>
-    ApiService.get<PaginationResponse<Account>>("/accounts");
+  public static getAll = ({ page, limit }: Partial<AccountsRequest> = {}) =>
+    ApiService.get<PaginationResponse<Account>>("/accounts", {
+      params: {
+        page,
+        limit: limit ?? ACCOUNTS_PER_PAGE,
+      },
+    });
 
   public static getById = (accountId: string) =>
     ApiService.get<ApiResponse<Account>>(`/accounts/${accountId}`);

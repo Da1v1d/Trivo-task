@@ -10,6 +10,11 @@ export type Account = {
   role: AccountRole;
 };
 
+export type AccountsRequest = {
+  page: number;
+  limit: number;
+};
+
 export type AccountSettingsValues = Record<string, unknown>;
 
 export type MergedAccountSetting = SettingFieldDefinition;
