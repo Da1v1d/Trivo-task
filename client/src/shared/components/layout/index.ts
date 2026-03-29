@@ -1,10 +1,5 @@
-export { Box } from "./box";
-export type { BoxProps } from "./box";
-export { Paper } from "./paper";
-export type { PaperProps } from "./paper";
-export { Stack } from "./stack";
-export type { StackProps } from "./stack";
-export { AppBar } from "./app-bar";
-export type { AppBarProps } from "./app-bar";
-export { Toolbar } from "./toolbar";
-export type { ToolbarProps } from "./toolbar";
+export { default as Box } from "./box";
+export { default as Paper } from "./paper";
+export { default as Stack } from "./stack";
+export { default as AppBar } from "./app-bar";
+export { default as Toolbar } from "./toolbar";

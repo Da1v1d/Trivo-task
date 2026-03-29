@@ -1,2 +1,5 @@
-export { Stack } from "@mui/material";
-export type { StackProps } from "@mui/material";
+import { Stack as MuiStack } from "@mui/material";
+
+const Stack = MuiStack;
+
+export default Stack;

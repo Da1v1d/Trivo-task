@@ -1,2 +1,5 @@
-export { List } from "@mui/material";
-export type { ListProps } from "@mui/material";
+import { List as MuiList } from "@mui/material";
+
+const List = MuiList;
+
+export default List;

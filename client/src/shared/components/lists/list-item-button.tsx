@@ -1,2 +1,5 @@
-export { ListItemButton } from "@mui/material";
-export type { ListItemButtonProps } from "@mui/material";
+import { ListItemButton as MuiListItemButton } from "@mui/material";
+
+const ListItemButton = MuiListItemButton;
+
+export default ListItemButton;

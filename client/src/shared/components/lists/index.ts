@@ -1,6 +1,3 @@
-export { List } from "./list";
-export type { ListProps } from "./list";
-export { ListItemButton } from "./list-item-button";
-export type { ListItemButtonProps } from "./list-item-button";
-export { ListItemText } from "./list-item-text";
-export type { ListItemTextProps } from "./list-item-text";
+export { default as List } from "./list";
+export { default as ListItemButton } from "./list-item-button";
+export { default as ListItemText } from "./list-item-text";

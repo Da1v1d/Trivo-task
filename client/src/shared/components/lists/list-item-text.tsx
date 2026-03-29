@@ -1,2 +1,5 @@
-export { ListItemText } from "@mui/material";
-export type { ListItemTextProps } from "@mui/material";
+import { ListItemText as MuiListItemText } from "@mui/material";
+
+const ListItemText = MuiListItemText;
+
+export default ListItemText;

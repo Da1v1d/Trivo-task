@@ -4,5 +4,4 @@ export { Snackbar } from "./snackbar";
 export type { SnackbarProps } from "./snackbar";
 export { CircularProgress } from "./circular-progress";
 export type { CircularProgressProps } from "./circular-progress";
-export { Skeleton } from "./skeleton";
-export type { SkeletonProps } from "./skeleton";
+export { default as Skeleton } from "./skeleton";

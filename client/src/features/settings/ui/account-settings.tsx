@@ -9,7 +9,7 @@ import {
   Snackbar,
 } from "@/shared/components/feedback";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { DynamicSettingsForm } from "@/features/settings/ui/DynamicSettingsForm";
+import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-form";
 import useAccounts from "@/features/accounts/model/hooks/use-accounts";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
 import { useSettingsDefinition } from "@/features/settings/model/hooks/use-settings-definition";

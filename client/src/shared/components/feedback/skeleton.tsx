@@ -1,2 +1,5 @@
-export { Skeleton } from "@mui/material";
-export type { SkeletonProps } from "@mui/material";
+import { Skeleton as MuiSkeleton } from "@mui/material";
+
+const Skeleton = MuiSkeleton;
+
+export default Skeleton;

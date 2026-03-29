@@ -7,7 +7,7 @@ import type { SettingFieldDefinition } from "@/shared/types/settings-definition"
 import type { AccountSettingsValues } from "@/shared/types/accounts";
 import { buildValidationSchema } from "@/features/settings/lib/build-validation-schema";
 import { buildDefaultValues } from "@/features/settings/lib/build-default-values";
-import { SettingFieldControl } from "./SettingFieldControl";
+import { SettingFieldControl } from "./settng-field-control";
 import { Button } from "@/shared/components/buttons";
 
 type DynamicSettingsFormProps = {

@@ -1,2 +1,5 @@
-export { Box } from "@mui/material";
-export type { BoxProps } from "@mui/material";
+import { Box as MuiBox } from "@mui/material";
+
+const Box = MuiBox;
+
+export default Box;

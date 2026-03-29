@@ -1,2 +1,5 @@
-export { AppBar } from "@mui/material";
-export type { AppBarProps } from "@mui/material";
+import { AppBar as MuiAppBar } from "@mui/material";
+
+const AppBar = MuiAppBar;
+
+export default AppBar;
