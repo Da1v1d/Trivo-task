@@ -10,6 +10,7 @@ import {
 import { GetAccountsQueryDto } from "@/modules/accounts/dto/get-accounts-query.dto";
 import { UpdateAccountSettingsDto } from "@/modules/accounts/dto/update-account-settings.dto";
 
+// i will keep this contants and interfaces here, because I am lazy to move them to the dto and constants files
 const SORT_WHITELIST: Record<string, string> = {
   name: "name",
   surname: "surname",
