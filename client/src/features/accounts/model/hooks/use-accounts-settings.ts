@@ -4,7 +4,7 @@ import {
   getMockAccountSettings,
   updateMockAccountSettings,
 } from "@/features/accounts/model/data/account-settings-mock-data";
-import type { AccountSettingsValues } from "@/shared/types/accounts";
+import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 import { ACCOUNTS_SETTINGS_QUERY_KEY } from "@/features/accounts/lib/constants";
 
 const useAccountsSettings = (accountId: string) => {

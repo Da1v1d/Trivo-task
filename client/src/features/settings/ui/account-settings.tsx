@@ -6,13 +6,16 @@ import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-for
 import useAccounts from "@/features/accounts/model/hooks/use-accounts";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
 import { useSettingsDefinition } from "@/features/settings/model/hooks/use-settings-definition";
-import type { Account, AccountSettingsValues } from "@/shared/types/accounts";
+import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 import BackButton from "@/shared/components/core/back-button";
+import useAccount from "@/features/accounts/model/hooks/use-account";
 
 const AccountsSettings = () => {
   const { accountId } = useParams<{ accountId: string }>();
 
   const { data: accountsData, isError: accountsError } = useAccounts();
+  const accountQuery = useAccount(accountId!);
+
   const {
     data: definitionData,
     isLoading: defLoading,
@@ -31,9 +34,7 @@ const AccountsSettings = () => {
     updateSettings(values);
   };
 
-  const selectedAccount = accountsData?.find(
-    (a: Account) => a.id === accountId,
-  );
+  const selectedAccount = accountQuery.data;
 
   if (!accountId) {
     return <Navigate to="/accounts" replace />;

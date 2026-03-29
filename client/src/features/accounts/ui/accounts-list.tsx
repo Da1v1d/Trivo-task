@@ -41,6 +41,7 @@ const AccountsList = () => {
             key={account.id}
             id={account.id}
             name={account.name}
+            surname={account.surname}
           />
         ))}
       </List>

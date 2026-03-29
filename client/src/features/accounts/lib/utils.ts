@@ -1,5 +1,5 @@
-export const getAccountInitials = (name: string): string => {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
+export const getAccountInitials = (fullName: string): string => {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) {
     return "?";
   }

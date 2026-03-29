@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@/shared/components/layout";
 import type { SettingFieldDefinition } from "@/features/settings/lib/types";
-import type { AccountSettingsValues } from "@/shared/types/accounts";
+import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 import { buildValidationSchema } from "@/features/settings/lib/schemas";
 import { buildDefaultValues } from "@/features/settings/lib/utils";
 import { SettingFieldControl } from "./setting-field-control";

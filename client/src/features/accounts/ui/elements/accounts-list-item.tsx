@@ -2,16 +2,17 @@ import { getAccountInitials } from "@/features/accounts/lib/utils";
 import { Avatar } from "@/shared/components/avatars";
 import { Stack } from "@/shared/components/layout";
 import { ListItemButton, ListItemText } from "@/shared/components/lists";
-import type { Account } from "@/shared/types/accounts";
+import type { Account } from "@/features/accounts/lib/types";
 import { useNavigate } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 type Props = {
   id: Account["id"];
   name: Account["name"];
+  surname: Account["surname"];
 };
 
-const AccountsListItem = ({ id, name }: Props) => {
+const AccountsListItem = ({ id, name, surname }: Props) => {
   const navigate = useNavigate();
 
   const navigationHandler = () => () => {
@@ -35,7 +36,7 @@ const AccountsListItem = ({ id, name }: Props) => {
           className="h-11 w-11 shrink-0 bg-indigo-100 text-sm font-semibold text-indigo-800"
           aria-hidden
         >
-          {getAccountInitials(name)}
+          {getAccountInitials(`${name} ${surname}`)}
         </Avatar>
         <ListItemText
           className="min-w-0"
