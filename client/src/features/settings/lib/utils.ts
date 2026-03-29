@@ -1,5 +1,5 @@
 import type { SettingFieldDefinition } from "@/features/settings/lib/types";
-import type { AccountSettingsValues } from "@/shared/types/accounts";
+import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 
 const getFieldDefault = (field: SettingFieldDefinition): unknown => {
   if (field.defaultValue !== undefined) return field.defaultValue;

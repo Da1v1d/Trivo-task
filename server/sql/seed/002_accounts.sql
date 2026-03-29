@@ -9,8 +9,10 @@
 --
 -- `TRUNCATE accounts CASCADE` also clears `account_settings` rows that reference accounts.
 -- It does not remove `setting_definitions`.
+--
+-- `image_url`: random Lorem Picsum image per row (`/id/{n}/128/128`). Values change on each seed run.
 
-INSERT INTO accounts (name, surname, role)
+INSERT INTO accounts (name, surname, role, image_url)
 SELECT
   (
     ARRAY[
@@ -22,5 +24,8 @@ SELECT
     ]
   )[((g - 1) % 40) + 1] AS name,
   'User' || g::text AS surname,
-  CASE WHEN g % 10 = 0 THEN 'admin' ELSE 'user' END AS role
+  CASE WHEN g % 10 = 0 THEN 'admin' ELSE 'user' END AS role,
+  'https://picsum.photos/id/'
+    || (1 + floor(random() * 999))::int::text
+    || '/128/128' AS image_url
 FROM generate_series(1, 100) AS g;

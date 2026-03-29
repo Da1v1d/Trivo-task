@@ -8,7 +8,6 @@ export const useSettingsDefinition = () => {
     queryKey: ["settings-definition"],
     queryFn: () => delay(400).then(() => settingsDefinitionMockData.data),
     // import { SettingsApi } from "@/features/settings/model/api/settings-definition.api";
-    // queryFn: () => SettingsApi.getDefinitionFields(),
-    staleTime: 5 * 60 * 1000,
+    // queryFn: () => SettingsApi.getDefinitions(),
   });
 };

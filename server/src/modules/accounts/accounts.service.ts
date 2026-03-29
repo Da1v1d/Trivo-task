@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import {
   AccountsRepository,
   AccountRow,
 } from "@/modules/accounts/accounts.repository";
 import { GetAccountsQueryDto } from "@/modules/accounts/dto/get-accounts-query.dto";
+import { UpdateAccountSettingsDto } from "@/modules/accounts/dto/update-account-settings.dto";
 
 const SORT_WHITELIST: Record<string, string> = {
   name: "name",
@@ -93,6 +98,39 @@ export class AccountsService {
       defaultValue: row.default_value,
       value: row.value ?? row.default_value,
     }));
+  }
+
+  async updateAccountSettings(
+    accountId: string,
+    dto: UpdateAccountSettingsDto,
+  ): Promise<MergedAccountSetting[]> {
+    const account = await this.accountsRepository.findById(accountId);
+    if (!account) {
+      throw new NotFoundException(`Account ${accountId} not found`);
+    }
+
+    const entries = Object.entries(dto.values ?? {});
+    if (entries.length === 0) {
+      return this.getAccountSettings(accountId);
+    }
+
+    const keys = entries.map(([k]) => k);
+    const idByKey = await this.accountsRepository.findDefinitionIdsByKeys(keys);
+    const unknown = keys.filter((k) => !idByKey.has(k));
+    if (unknown.length > 0) {
+      throw new BadRequestException(
+        `Unknown setting keys: ${unknown.join(", ")}`,
+      );
+    }
+
+    const rows = entries.map(([key, value]) => ({
+      settingDefinitionId: idByKey.get(key)!,
+      value,
+    }));
+
+    await this.accountsRepository.upsertAccountSettingsValues(accountId, rows);
+
+    return this.getAccountSettings(accountId);
   }
 
   private toAccountResponse(row: AccountRow): AccountResponse {

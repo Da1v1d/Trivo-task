@@ -10,9 +10,10 @@ type Props = {
   id: Account["id"];
   name: Account["name"];
   surname: Account["surname"];
+  image: Account["image"];
 };
 
-const AccountsListItem = ({ id, name, surname }: Props) => {
+const AccountsListItem = ({ id, name, surname, image }: Props) => {
   const navigate = useNavigate();
 
   const navigationHandler = () => () => {
@@ -35,8 +36,9 @@ const AccountsListItem = ({ id, name, surname }: Props) => {
         <Avatar
           className="h-11 w-11 shrink-0 bg-indigo-100 text-sm font-semibold text-indigo-800"
           aria-hidden
+          src={image ?? undefined}
         >
-          {getAccountInitials(`${name} ${surname}`)}
+          {!image && getAccountInitials(`${name} ${surname}`)}
         </Avatar>
         <ListItemText
           className="min-w-0"

@@ -42,6 +42,7 @@ const AccountsList = () => {
             id={account.id}
             name={account.name}
             surname={account.surname}
+            image={account.image}
           />
         ))}
       </List>

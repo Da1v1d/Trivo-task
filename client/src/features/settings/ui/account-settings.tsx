@@ -1,19 +1,17 @@
 import { Navigate, useParams } from "react-router-dom";
 import { Box, Paper } from "@/shared/components/layout";
-import { Text } from "@/shared/components/texts";
 import { Alert, CircularProgress, Toast } from "@/shared/components/feedback";
 import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-form";
-import useAccounts from "@/features/accounts/model/hooks/use-accounts";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
 import { useSettingsDefinition } from "@/features/settings/model/hooks/use-settings-definition";
 import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 import BackButton from "@/shared/components/core/back-button";
 import useAccount from "@/features/accounts/model/hooks/use-account";
+import AccountPersona from "@/features/accounts/ui/elements/account-persona";
 
 const AccountsSettings = () => {
   const { accountId } = useParams<{ accountId: string }>();
 
-  const { data: accountsData, isError: accountsError } = useAccounts();
   const accountQuery = useAccount(accountId!);
 
   const {
@@ -45,12 +43,6 @@ const AccountsSettings = () => {
       <BackButton />
 
       <Box className="max-w-3xl mt-4">
-        {accountsError && (
-          <Alert severity="warning" className="mb-4">
-            Could not load account name. Settings may still load.
-          </Alert>
-        )}
-
         {accountId && defLoading && (
           <Box className="flex justify-center mt-12">
             <CircularProgress />
@@ -71,9 +63,18 @@ const AccountsSettings = () => {
 
         {accountId && definitionData && !defLoading && (
           <Box className="max-w-2xl space-y-4">
-            <Text variant="h5" className="font-semibold">
-              {selectedAccount?.name ?? "Account"} — Settings
-            </Text>
+            <AccountPersona
+              name={selectedAccount?.name}
+              surname={selectedAccount?.surname}
+              image={selectedAccount?.image}
+              avatarProps={{
+                className:
+                  "size-32 shrink-0 bg-indigo-100 text-sm font-semibold text-indigo-800",
+              }}
+              textProps={{
+                className: "text-2xl font-semibold",
+              }}
+            />
 
             {settingsLoading ? (
               <Box className="flex justify-center mt-8">

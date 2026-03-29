@@ -6,6 +6,7 @@ const useAccount = (accountId: string) => {
   return useQuery({
     queryKey: [ACCOUNT_QUERY_KEY, accountId],
     queryFn: () => AccountsApi.getById(accountId),
+    select: (data) => data.data,
   });
 };
 

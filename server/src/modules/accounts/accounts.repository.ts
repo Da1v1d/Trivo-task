@@ -72,6 +72,50 @@ export class AccountsRepository {
     return result.rows[0] ?? null;
   }
 
+  async findDefinitionIdsByKeys(keys: string[]): Promise<Map<string, string>> {
+    if (keys.length === 0) {
+      return new Map();
+    }
+    const placeholders = keys.map((_, i) => `$${i + 1}`).join(", ");
+    const sql = `SELECT id, key FROM setting_definitions WHERE key IN (${placeholders})`;
+    const result = await this.pool.query<{ id: string; key: string }>(
+      sql,
+      keys,
+    );
+    return new Map(result.rows.map((r) => [r.key, r.id]));
+  }
+
+  /**
+   * Upserts all rows in one transaction.
+   */
+  async upsertAccountSettingsValues(
+    accountId: string,
+    rows: { settingDefinitionId: string; value: unknown }[],
+  ): Promise<void> {
+    if (rows.length === 0) {
+      return;
+    }
+    const client = await this.pool.connect();
+    try {
+      await client.query("BEGIN");
+      for (const row of rows) {
+        await client.query(
+          `INSERT INTO account_settings (account_id, setting_definition_id, value)
+           VALUES ($1, $2, $3::jsonb)
+           ON CONFLICT (account_id, setting_definition_id)
+           DO UPDATE SET value = EXCLUDED.value`,
+          [accountId, row.settingDefinitionId, JSON.stringify(row.value)],
+        );
+      }
+      await client.query("COMMIT");
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
   async findAccountSettingsJoined(
     accountId: string,
   ): Promise<AccountSettingsJoinedRow[]> {

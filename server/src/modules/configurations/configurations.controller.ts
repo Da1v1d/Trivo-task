@@ -6,7 +6,8 @@ export class ConfigurationsController {
   constructor(private readonly configurationsService: ConfigurationsService) {}
 
   @Get("settings")
-  getSettings() {
-    return this.configurationsService.getAllSettings();
+  async getSettings() {
+    const data = await this.configurationsService.getAllSettings();
+    return { data };
   }
 }
