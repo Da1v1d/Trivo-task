@@ -2,7 +2,8 @@ import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 import type { AccountSettingsValues } from "@/features/accounts/lib/types";
 
 const getFieldDefault = (field: SettingFieldDefinition): unknown => {
-  if (field.defaultValue !== undefined) return field.defaultValue;
+  if (field.value) return field.value;
+  if (field.defaultValue) return field.defaultValue;
 
   switch (field.type) {
     case "boolean":

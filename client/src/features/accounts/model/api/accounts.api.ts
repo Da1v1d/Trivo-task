@@ -32,6 +32,6 @@ export class AccountsApi {
   ) =>
     ApiService.put<ApiResponse<MergedAccountSetting[]>>(
       `/accounts/${accountId}/settings`,
-      values,
+      { values },
     );
 }

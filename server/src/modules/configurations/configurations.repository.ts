@@ -2,6 +2,13 @@ import { Injectable, Inject } from "@nestjs/common";
 import { Pool } from "pg";
 import { DATABASE_POOL } from "@/database/database.constants";
 
+export interface SettingValidation {
+  required?: boolean;
+  min?: number;
+  max?: number;
+  pattern?: string;
+}
+
 export interface SettingDefinitionRow {
   id: string;
   key: string;
@@ -9,7 +16,7 @@ export interface SettingDefinitionRow {
   type: string;
   default_value: unknown;
   options: unknown;
-  is_required: boolean;
+  validation: SettingValidation | null;
   display_order: number;
 }
 
@@ -19,7 +26,7 @@ export class ConfigurationsRepository {
 
   async findAllSettings(): Promise<SettingDefinitionRow[]> {
     const sql = `
-      SELECT id, key, label, type, default_value, options, is_required, display_order
+      SELECT id, key, label, type, default_value, options, validation, display_order
       FROM setting_definitions
       ORDER BY display_order, key
     `;

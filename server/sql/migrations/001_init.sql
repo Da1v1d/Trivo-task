@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS setting_definitions (
   type          VARCHAR(50)  NOT NULL CHECK (type IN ('boolean','text','number','select','multiselect')),
   default_value JSONB,
   options       JSONB,
-  is_required   BOOLEAN NOT NULL DEFAULT false,
+  validation    JSONB,
   display_order INT     NOT NULL DEFAULT 0
 );
 

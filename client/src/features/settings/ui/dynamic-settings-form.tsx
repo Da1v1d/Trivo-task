@@ -29,14 +29,20 @@ export const DynamicSettingsForm = ({
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isDirty },
   } = useForm<Record<string, unknown>>({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
+  const submitHandler = (values: AccountSettingsValues) => {
+    onSubmit(values);
+    reset(buildDefaultValues(fieldList, values));
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form onSubmit={handleSubmit(submitHandler)} noValidate>
       <Stack spacing={3}>
         {fieldList.map((field) => (
           <SettingFieldControl

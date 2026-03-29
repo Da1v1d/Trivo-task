@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import {
   ConfigurationsRepository,
   SettingDefinitionRow,
+  SettingValidation,
 } from "@/modules/configurations/configurations.repository";
 
 export interface SettingDefinitionResponse {
@@ -11,7 +12,7 @@ export interface SettingDefinitionResponse {
   type: string;
   defaultValue: unknown;
   options: unknown;
-  isRequired: boolean;
+  validation: SettingValidation | null;
   displayOrder: number;
 }
 
@@ -34,7 +35,7 @@ export class ConfigurationsService {
       type: row.type,
       defaultValue: row.default_value,
       options: row.options,
-      isRequired: row.is_required,
+      validation: row.validation,
       displayOrder: row.display_order,
     };
   }

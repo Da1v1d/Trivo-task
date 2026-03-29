@@ -24,4 +24,5 @@ export type SettingFieldDefinition = {
   options?: SettingFieldOption[];
   validation?: SettingFieldValidation;
   defaultValue?: unknown;
+  value?: unknown;
 };

@@ -83,7 +83,12 @@ const AccountsSettings = () => {
                 <Paper elevation={0} className="p-6 border border-gray-200">
                   <DynamicSettingsForm
                     fields={accountSettingsQuery.data}
-                    values={accountSettingsQuery.data}
+                    values={Object.fromEntries(
+                      accountSettingsQuery.data?.map((setting) => [
+                        setting.key,
+                        setting.value,
+                      ]),
+                    )}
                     onSubmit={handleSubmit}
                     isSaving={isPending}
                   />

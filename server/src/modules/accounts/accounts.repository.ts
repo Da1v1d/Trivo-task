@@ -17,7 +17,12 @@ export interface AccountSettingsJoinedRow {
   type: string;
   default_value: unknown;
   options: unknown;
-  is_required: boolean;
+  validation: {
+    required?: boolean;
+    min?: number;
+    max?: number;
+    pattern?: string;
+  } | null;
   display_order: number;
   value: unknown | null;
 }
@@ -126,7 +131,7 @@ export class AccountsRepository {
         sd.type,
         sd.default_value,
         sd.options,
-        sd.is_required,
+        sd.validation,
         sd.display_order,
         acs.value
       FROM setting_definitions sd

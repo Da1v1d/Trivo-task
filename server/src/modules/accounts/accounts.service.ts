@@ -30,7 +30,12 @@ export interface MergedAccountSetting {
   type: string;
   label: string;
   options: unknown;
-  isRequired: boolean;
+  validation: {
+    required?: boolean;
+    min?: number;
+    max?: number;
+    pattern?: string;
+  } | null;
   defaultValue: unknown;
   value: unknown;
 }
@@ -94,7 +99,7 @@ export class AccountsService {
       type: row.type,
       label: row.label,
       options: row.options,
-      isRequired: row.is_required,
+      validation: row.validation,
       defaultValue: row.default_value,
       value: row.value ?? row.default_value,
     }));

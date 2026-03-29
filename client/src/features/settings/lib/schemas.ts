@@ -1,8 +1,12 @@
 import { z, type ZodTypeAny } from "zod";
 import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 
+const isRequiredField = (field: SettingFieldDefinition): boolean =>
+  Boolean(field.validation?.required);
+
 const buildFieldSchema = (field: SettingFieldDefinition): ZodTypeAny => {
   const v = field.validation;
+  const required = isRequiredField(field);
 
   switch (field.type) {
     case "boolean":
@@ -10,7 +14,7 @@ const buildFieldSchema = (field: SettingFieldDefinition): ZodTypeAny => {
 
     case "text": {
       let schema = z.string();
-      if (v?.required) schema = schema.min(1, "This field is required");
+      if (required) schema = schema.min(1, "This field is required");
       if (v?.pattern)
         schema = schema.regex(new RegExp(v.pattern), "Invalid format");
       return schema;
@@ -27,14 +31,14 @@ const buildFieldSchema = (field: SettingFieldDefinition): ZodTypeAny => {
 
     case "select": {
       let schema = z.string();
-      if (v?.required) schema = schema.min(1, "Please select an option");
+      if (required) schema = schema.min(1, "Please select an option");
       return schema;
     }
 
     case "multiselect": {
       const inner = z.string();
       const schema = z.array(inner);
-      if (v?.required) return schema.min(1, "Select at least one option");
+      if (required) return schema.min(1, "Select at least one option");
       return schema;
     }
 
