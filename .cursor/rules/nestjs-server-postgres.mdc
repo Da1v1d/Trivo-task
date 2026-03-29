@@ -1,0 +1,104 @@
+---
+description: NestJS server — PostgreSQL raw SQL, layered architecture, no ORM
+globs: server/**/*.ts
+alwaysApply: false
+---
+
+# Server — NestJS + PostgreSQL (raw SQL)
+
+## Goals
+
+- Accounts list, account settings, flexible configuration (definitions + per-account values).
+- **No ORM** — raw SQL only in repositories.
+- Flow: **Controller → Service → Repository → PostgreSQL**.
+- One responsibility per layer; easy to extend and test.
+
+## Layers
+
+| Layer          | Responsibility                                                                              |
+| -------------- | ------------------------------------------------------------------------------------------- |
+| **Controller** | HTTP only: routes, params, query parsing; DTO validation via `ValidationPipe`.              |
+| **Service**    | Business logic: orchestrate repos, rules, errors, merge defaults, pagination orchestration. |
+| **Repository** | Data access only: parameterized SQL, map rows → objects. **No** business logic.             |
+| **Database**   | Connection only — export a shared **`pg` `Pool`** (recommended).                            |
+
+## Database connection (Approach A — `Pool`)
+
+```typescript
+import { Pool } from "pg";
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+```
+
+- `DatabaseModule` provides and exports `Pool`; repositories inject `Pool`.
+- Benefits: pooling, concurrency, transactions, production standard.
+
+## Module layout (`server/src/`)
+
+```
+database/
+  database.module.ts
+  database.provider.ts
+
+accounts/
+  accounts.module.ts
+  accounts.controller.ts
+  accounts.service.ts
+  accounts.repository.ts
+  dto/
+
+configurations/
+  configurations.module.ts
+  configurations.controller.ts
+  configurations.service.ts
+  configurations.repository.ts
+  dto/
+
+common/
+  pagination.dto.ts   # shared query DTOs as needed
+```
+
+## Domain tables
+
+- **`accounts`**: `id`, `name`, `surname`, `image_url`, `role`, `created_at`.
+- **`setting_definitions`**: catalog of settings — `id`, `key`, `label`, `type` (boolean \| text \| number \| select \| multiselect), `default_value` (jsonb), `options` (jsonb), `is_required`, `display_order`.
+- **`account_settings`**: `account_id`, `setting_definition_id`, `value` (jsonb) — actual values per account.
+
+Use **jsonb** for values because shapes differ (`true`, `"email"`, `["a","b"]`).
+
+## HTTP API (reference)
+
+**Accounts**
+
+- `GET /accounts` — pagination + filters: `page`, `limit`, `search`, `role`, `sortBy`, `sortOrder`.
+- `GET /accounts/:id` — `{ id, name, surname, image, role }` (match contract naming to client).
+- `GET /accounts/:id/settings` — merged list: definition metadata + `defaultValue` + resolved `value` per key.
+
+**Configurations**
+
+- `GET /configurations/settings` — all setting definitions (UI builder).
+
+## DTOs
+
+- Validate **input** only (query, params, body) with class-validator + **`ValidationPipe`**.
+- Examples: `GetAccountsQueryDto`, `AccountIdParamDto`, extend or compose `PaginationDto`.
+- Keeps SQL safe and API contract explicit.
+
+## SQL rules (no ORM)
+
+- **Always** parameterized: `WHERE id = $1`, `LIMIT $1 OFFSET $2`.
+- **Never** string-interpolate user input into SQL.
+- Search example: `WHERE name ILIKE '%' || $1 || '%'` (param is the inner term, not full pattern with raw `%` from untrusted concat if avoidable).
+- **Sort whitelist** — map `sortBy` to known column names; reject unknown fields to prevent injection.
+
+## Service vs repository examples
+
+- **Repository**: `SELECT * FROM accounts WHERE id = $1`; return typed row/DTO mapping.
+- **Service**: “account exists”; merge `setting_definitions` defaults with `account_settings` rows; apply pagination math before calling repo.
+
+## Modules summary
+
+- `DatabaseModule` → `Pool`
+- `AccountsModule`, `ConfigurationsModule` — each: controller, service, repository, `dto/`
+
+When adding features, **new module** with the same layer split rather than bloating a single service.

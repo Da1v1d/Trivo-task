@@ -1,6 +1,6 @@
 ---
-description: FSD-style src layout — where to put utils, types, hooks, and API in the client
-alwaysApply: true
+globs: client/**/*.ts
+alwaysApply: false
 ---
 
 # Frontend client — FSD folder structure
