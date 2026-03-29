@@ -1,5 +1,5 @@
 import { ApiService } from "@/shared/services/api";
-import type { SettingsDefinitionResponse } from "@/shared/types/settings-definition";
+import type { SettingsDefinitionResponse } from "@/features/settings/lib/types";
 
 export class SettingsApi {
   public static getDefinition = () =>

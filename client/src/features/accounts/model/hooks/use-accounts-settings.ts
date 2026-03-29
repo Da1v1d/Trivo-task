@@ -1,22 +1,27 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { AccountsApi } from "@/features/accounts/model/api/accounts.api";
+import { delay } from "@/shared/utils/utils";
+import {
+  getMockAccountSettings,
+  updateMockAccountSettings,
+} from "@/features/accounts/model/data/account-settings-mock-data";
 import type { AccountSettingsValues } from "@/shared/types/accounts";
 import { ACCOUNTS_SETTINGS_QUERY_KEY } from "@/features/accounts/lib/constants";
-import type { TODO } from "@/shared/types/types";
 
-const useAccountsSettings = (accountId: string, ...props: TODO[]) => {
+const useAccountsSettings = (accountId: string) => {
   const queryClient = useQueryClient();
 
   const settingsQuery = useQuery({
     queryKey: [ACCOUNTS_SETTINGS_QUERY_KEY, accountId],
-    queryFn: () => AccountsApi.getAccountSettings(accountId!),
+    queryFn: () => delay(500).then(() => getMockAccountSettings(accountId)),
+    // import { AccountsApi } from "@/features/accounts/model/api/accounts.api";
+    // queryFn: () => AccountsApi.getAccountSettings(accountId),
     enabled: !!accountId,
-    ...props,
   });
 
   const updateMutation = useMutation({
     mutationFn: (values: AccountSettingsValues) =>
-      AccountsApi.updateAccountSettings(accountId!, values),
+      delay(350).then(() => updateMockAccountSettings(accountId, values)),
+    // mutationFn: (values) => AccountsApi.updateAccountSettings(accountId, values),
     onSuccess: (data) => {
       // we can use queryClient.setQueryData to update the query data
       queryClient.setQueryData([ACCOUNTS_SETTINGS_QUERY_KEY, accountId], data);

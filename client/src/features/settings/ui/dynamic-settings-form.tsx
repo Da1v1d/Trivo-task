@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@/shared/components/layout";
 import { CircularProgress } from "@/shared/components/feedback";
-import type { SettingFieldDefinition } from "@/shared/types/settings-definition";
+import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 import type { AccountSettingsValues } from "@/shared/types/accounts";
-import { buildValidationSchema } from "@/features/settings/lib/build-validation-schema";
-import { buildDefaultValues } from "@/features/settings/lib/build-default-values";
-import { SettingFieldControl } from "./settng-field-control";
+import { buildValidationSchema } from "@/features/settings/lib/schemas";
+import { buildDefaultValues } from "@/features/settings/lib/utils";
+import { SettingFieldControl } from "./setting-field-control";
 import { Button } from "@/shared/components/buttons";
 
 type DynamicSettingsFormProps = {
@@ -23,32 +23,35 @@ export const DynamicSettingsForm = ({
   onSubmit,
   isSaving,
 }: DynamicSettingsFormProps) => {
-  const schema = buildValidationSchema(fields);
-  const defaultValues = buildDefaultValues(fields, values);
+  const fieldList = useMemo(
+    () => (Array.isArray(fields) ? fields : []),
+    [fields],
+  );
+  const schema = buildValidationSchema(fieldList);
+  const defaultValues = buildDefaultValues(fieldList, values);
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isDirty },
+    formState: { isDirty },
   } = useForm<Record<string, unknown>>({
     resolver: zodResolver(schema),
     defaultValues,
   });
 
   useEffect(() => {
-    reset(buildDefaultValues(fields, values));
-  }, [fields, values, reset]);
+    reset(buildDefaultValues(fieldList, values));
+  }, [fieldList, values, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Stack spacing={3}>
-        {fields.map((field) => (
+        {fieldList.map((field) => (
           <SettingFieldControl
             key={field.key}
             field={field}
             control={control}
-            errors={errors}
           />
         ))}
 

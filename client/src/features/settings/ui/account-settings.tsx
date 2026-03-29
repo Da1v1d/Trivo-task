@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { Box, Paper } from "@/shared/components/layout";
 import { Text } from "@/shared/components/texts";
@@ -6,6 +7,7 @@ import { DynamicSettingsForm } from "@/features/settings/ui/dynamic-settings-for
 import useAccounts from "@/features/accounts/model/hooks/use-accounts";
 import useAccountSettings from "@/features/accounts/model/hooks/use-accounts-settings";
 import { useSettingsDefinition } from "@/features/settings/model/hooks/use-settings-definition";
+import { normalizeSettingsDefinitionFields } from "@/features/settings/lib/utils";
 import type { Account, AccountSettingsValues } from "@/shared/types/accounts";
 import BackButton from "@/shared/components/core/back-button";
 
@@ -35,6 +37,11 @@ const AccountsSettings = () => {
     (a: Account) => a.id === accountId,
   );
 
+  const definitionFields = useMemo(
+    () => normalizeSettingsDefinitionFields(definitionData),
+    [definitionData],
+  );
+
   if (!accountId) {
     return <Navigate to="/accounts" replace />;
   }
@@ -43,7 +50,7 @@ const AccountsSettings = () => {
     <Box className="p-2 md:p-4">
       <BackButton />
 
-      <Box className="max-w-3xl">
+      <Box className="max-w-3xl mt-4">
         {accountsError && (
           <Alert severity="warning" className="mb-4">
             Could not load account name. Settings may still load.
@@ -69,8 +76,8 @@ const AccountsSettings = () => {
         )}
 
         {accountId && definitionData && !defLoading && (
-          <Box className="max-w-2xl">
-            <Text variant="h5" className="mb-6 font-semibold">
+          <Box className="max-w-2xl space-y-4">
+            <Text variant="h5" className="font-semibold">
               {selectedAccount?.name ?? "Account"} — Settings
             </Text>
 
@@ -80,12 +87,12 @@ const AccountsSettings = () => {
               </Box>
             ) : (
               <Paper elevation={0} className="p-6 border border-gray-200">
-                {/* <DynamicSettingsForm
-                  fields={definitionData.fields}
+                <DynamicSettingsForm
+                  fields={definitionFields}
                   values={settings}
                   onSubmit={handleSubmit}
                   isSaving={isPending}
-                /> */}
+                />
               </Paper>
             )}
           </Box>

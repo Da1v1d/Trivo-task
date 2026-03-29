@@ -1,5 +1,5 @@
 import { z, type ZodTypeAny } from "zod";
-import type { SettingFieldDefinition } from "@/shared/types/settings-definition";
+import type { SettingFieldDefinition } from "@/features/settings/lib/types";
 
 const buildFieldSchema = (field: SettingFieldDefinition): ZodTypeAny => {
   const v = field.validation;
@@ -43,10 +43,13 @@ const buildFieldSchema = (field: SettingFieldDefinition): ZodTypeAny => {
   }
 };
 
-export const buildValidationSchema = (fields: SettingFieldDefinition[]) => {
+export const buildValidationSchema = (
+  fields: SettingFieldDefinition[] | null | undefined,
+) => {
   const shape: Record<string, ZodTypeAny> = {};
+  const list = Array.isArray(fields) ? fields : [];
 
-  for (const field of fields) {
+  for (const field of list) {
     shape[field.key] = buildFieldSchema(field);
   }
 
